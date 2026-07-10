@@ -1,0 +1,58 @@
+# Stack de produccion para la VPS (/opt/yugen-store/).
+# Totalmente aislado: red propia, volumen propio, y su propio cloudflared.
+# No usa redes ni recursos de otros proyectos del servidor.
+
+services:
+  yugen_api:
+    image: ghcr.io/michaelnegrete16/yugen-store-back:latest
+    container_name: yugen_api
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      yugen_postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/api/v1/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    networks:
+      - yugen_net
+
+  yugen_postgres:
+    image: postgres:16-alpine
+    container_name: yugen_postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - yugen_postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_NAME}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - yugen_net
+
+  # Tunnel propio: expone la API por el dominio sin abrir puertos en el host.
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: yugen_cloudflared
+    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    restart: unless-stopped
+    depends_on:
+      - yugen_api
+    networks:
+      - yugen_net
+
+networks:
+  yugen_net:
+    name: yugen_net
+
+volumes:
+  yugen_postgres_data:
+    name: yugen_postgres_data

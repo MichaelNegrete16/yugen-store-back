@@ -76,5 +76,6 @@
     "setupFiles": [
       "reflect-metadata"
     ]
-  }
+  },
+  "packageManager": "pnpm@11.5.2"
 }

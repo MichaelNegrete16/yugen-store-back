@@ -1,0 +1,50 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: yugen
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '3000:3000'
+    environment:
+      PORT: 3000
+      # NODE_ENV=development deja que TypeORM cree el esquema y corra el seed
+      # al levantar. En un entorno real esto se maneja con migraciones.
+      NODE_ENV: development
+      CORS_ORIGIN: '*'
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: yugen
+      # Valores de la pasarela (sandbox). Reemplazar por las llaves reales en .env
+      # cuando se active la integracion; el adaptador stub no las usa.
+      GATEWAY_BASE_URL: https://sandbox.gateway/v1
+      GATEWAY_PUBLIC_KEY: pub_test_xxx
+      GATEWAY_PRIVATE_KEY: prv_test_xxx
+      GATEWAY_INTEGRITY_SECRET: test_integrity_xxx
+      GATEWAY_EVENTS_SECRET: test_events_xxx
+      GATEWAY_CURRENCY: COP
+      SHIPPING_COP: 15000
+      IVA_RATE: 0.19
+      DISCOUNT_CODE: YUGEN10
+      DISCOUNT_RATE: 0.10
+
+volumes:
+  pgdata:

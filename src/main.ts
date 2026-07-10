@@ -1,6 +1,7 @@
 import { HttpStatus, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
 
@@ -28,6 +29,26 @@ async function bootstrap() {
   // CORS habilitado para la app movil (configurable por entorno).
   app.enableCors({
     origin: config.get<string>('CORS_ORIGIN', '*'),
+  });
+
+  // Documentacion OpenAPI en /api/v1/docs.
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Yūgen Store API')
+    .setDescription(
+      'API del checkout de pago con tarjeta de Yūgen Store. Catálogo, ' +
+        'cotización, transacciones (pago con tarjeta), estado y historial de compras.',
+    )
+    .setVersion('1.0')
+    .addTag('products', 'Catálogo de productos')
+    .addTag('checkout', 'Cotización del pedido')
+    .addTag('transactions', 'Pago con tarjeta y estado de la transacción')
+    .addTag('orders', 'Historial de compras')
+    .addTag('health', 'Estado del servicio')
+    .build();
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api/v1/docs', app, document, {
+    customSiteTitle: 'Yūgen Store API — Docs',
+    swaggerOptions: { persistAuthorization: true },
   });
 
   const port = config.get<number>('PORT', 3000);

@@ -1,8 +1,8 @@
 import { CardDetails } from '../../domain/repository/payment-gateway.repository';
-import { PaymentGatewayService } from './payment-gateway.service';
+import { StubPaymentGatewayService } from './stub-payment-gateway.service';
 
-describe('PaymentGatewayService (stub)', () => {
-  const service = new PaymentGatewayService();
+describe('StubPaymentGatewayService (stub)', () => {
+  const service = new StubPaymentGatewayService();
   const card: CardDetails = {
     number: '4242424242424242',
     cardHolder: 'K S',

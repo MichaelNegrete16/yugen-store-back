@@ -12,7 +12,7 @@ import {
 // Pasarela simulada para desarrollar el flujo completo sin llamadas HTTP.
 // El adaptador real la reemplaza mas adelante. Tarjetas con last4 "0002" salen DECLINED.
 @Injectable()
-export class PaymentGatewayService implements PaymentGateway {
+export class StubPaymentGatewayService implements PaymentGateway {
   getAcceptanceTokens(): Promise<AcceptanceTokens> {
     return Promise.resolve({
       acceptanceToken: 'stub_acceptance_token',

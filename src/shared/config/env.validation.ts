@@ -15,6 +15,11 @@ export enum NodeEnv {
   Test = 'test',
 }
 
+export enum GatewayMode {
+  Stub = 'stub',
+  Http = 'http',
+}
+
 /**
  * Esquema de las variables de entorno. Si falta alguna obligatoria o tiene
  * un tipo inválido, la app falla al arrancar (fail-fast) en vez de romper
@@ -68,6 +73,9 @@ export class EnvironmentVariables {
 
   @IsString()
   GATEWAY_CURRENCY: string = 'COP';
+
+  @IsEnum(GatewayMode)
+  GATEWAY_MODE: GatewayMode = GatewayMode.Stub;
 
   // Reglas de negocio
   @IsInt()

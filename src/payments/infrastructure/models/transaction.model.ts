@@ -10,12 +10,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { TransactionStatus } from '../../domain/entities/transaction.entity';
-import { CustomerOrmEntity } from './customer.model';
-import { DeliveryOrmEntity } from './delivery.model';
-import { TransactionItemOrmEntity } from './transaction-item.model';
+import { CustomerModel } from './customer.model';
+import { DeliveryModel } from './delivery.model';
+import { TransactionItemModel } from './transaction-item.model';
 
 @Entity({ name: 'transactions' })
-export class TransactionOrmEntity {
+export class TransactionModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -53,19 +53,19 @@ export class TransactionOrmEntity {
   @Column({ type: 'varchar', nullable: true })
   gatewayTransactionId: string | null;
 
-  @ManyToOne(() => CustomerOrmEntity, { eager: true, cascade: true })
+  @ManyToOne(() => CustomerModel, { eager: true, cascade: true })
   @JoinColumn({ name: 'customerId' })
-  customer: CustomerOrmEntity;
+  customer: CustomerModel;
 
-  @ManyToOne(() => DeliveryOrmEntity, { eager: true, cascade: true })
+  @ManyToOne(() => DeliveryModel, { eager: true, cascade: true })
   @JoinColumn({ name: 'deliveryId' })
-  delivery: DeliveryOrmEntity;
+  delivery: DeliveryModel;
 
-  @OneToMany(() => TransactionItemOrmEntity, (item) => item.transaction, {
+  @OneToMany(() => TransactionItemModel, (item) => item.transaction, {
     eager: true,
     cascade: true,
   })
-  items: TransactionItemOrmEntity[];
+  items: TransactionItemModel[];
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;

@@ -6,7 +6,7 @@ import { ProductCategory } from '../../domain/entities/product.entity';
  * mantener el dominio libre de dependencias de TypeORM.
  */
 @Entity({ name: 'products' })
-export class ProductOrmEntity {
+export class ProductModel {
   @PrimaryColumn({ type: 'varchar' })
   id: string;
 

@@ -5,13 +5,13 @@ import {
   CreateChargeInput,
   GatewayCharge,
   GatewayStatus,
-  PaymentGatewayPort,
+  PaymentGateway,
 } from '../../domain/repository/payment-gateway.repository';
 
 // Pasarela simulada para desarrollar el flujo completo sin llamadas HTTP.
 // El adaptador real la reemplaza mas adelante. Tarjetas con last4 "0002" salen DECLINED.
 @Injectable()
-export class StubPaymentGatewayAdapter implements PaymentGatewayPort {
+export class PaymentGatewayService implements PaymentGateway {
   getAcceptanceToken(): Promise<string> {
     return Promise.resolve('stub_acceptance_token');
   }

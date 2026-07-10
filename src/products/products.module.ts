@@ -3,13 +3,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GetProductUseCase } from './application/get-product.usecase';
 import { ListProductsUseCase } from './application/list-products.usecase';
 import { PRODUCT_REPOSITORY } from './domain/repository/product.repository';
-import { ProductOrmEntity } from './infrastructure/models/product.model';
+import { ProductModel } from './infrastructure/models/product.model';
 import { ProductSeeder } from './infrastructure/seeders/product.seeder';
 import { ProductsController } from './infrastructure/controllers/products.controller';
-import { TypeOrmProductRepository } from './infrastructure/services/typeorm-product.service';
+import { ProductService } from './infrastructure/services/product.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductOrmEntity])],
+  imports: [TypeOrmModule.forFeature([ProductModel])],
   controllers: [ProductsController],
   providers: [
     ListProductsUseCase,
@@ -17,7 +17,7 @@ import { TypeOrmProductRepository } from './infrastructure/services/typeorm-prod
     ProductSeeder,
     {
       provide: PRODUCT_REPOSITORY,
-      useClass: TypeOrmProductRepository,
+      useClass: ProductService,
     },
   ],
   exports: [PRODUCT_REPOSITORY],

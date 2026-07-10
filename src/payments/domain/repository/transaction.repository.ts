@@ -5,7 +5,7 @@ export type NewTransaction = Omit<
   'id' | 'createdAt' | 'updatedAt'
 >;
 
-export interface TransactionRepositoryPort {
+export interface TransactionRepository {
   create(data: NewTransaction): Promise<Transaction>;
   findByReference(reference: string): Promise<Transaction | null>;
   findByCustomerEmail(email: string): Promise<Transaction[]>;

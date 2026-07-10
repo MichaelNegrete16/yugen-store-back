@@ -1,5 +1,5 @@
 import { Product, ProductCategory } from '../domain/entities/product.entity';
-import { ProductRepositoryPort } from '../domain/repository/product.repository';
+import { ProductRepository } from '../domain/repository/product.repository';
 import { ListProductsUseCase } from './list-products.usecase';
 
 describe('ListProductsUseCase', () => {
@@ -13,7 +13,7 @@ describe('ListProductsUseCase', () => {
     stock: 8,
   };
 
-  const repo: jest.Mocked<ProductRepositoryPort> = {
+  const repo: jest.Mocked<ProductRepository> = {
     findAll: jest.fn(),
     findById: jest.fn(),
     decreaseStock: jest.fn(),

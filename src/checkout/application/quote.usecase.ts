@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PRODUCT_REPOSITORY } from '../../products/domain/repository/product.repository';
-import type { ProductRepositoryPort } from '../../products/domain/repository/product.repository';
+import type { ProductRepository } from '../../products/domain/repository/product.repository';
 import { PRICING_CONFIG } from '../../shared/pricing/pricing.module';
 import {
   PriceBreakdown,
@@ -23,7 +23,7 @@ export interface QuoteItem {
 export class QuoteUseCase {
   constructor(
     @Inject(PRODUCT_REPOSITORY)
-    private readonly products: ProductRepositoryPort,
+    private readonly products: ProductRepository,
     @Inject(PRICING_CONFIG)
     private readonly pricing: PricingConfig,
   ) {}

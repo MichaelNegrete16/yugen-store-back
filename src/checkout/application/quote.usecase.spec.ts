@@ -1,6 +1,6 @@
 import { NotFoundException } from '@nestjs/common';
 import { Product, ProductCategory } from '../../products/domain/entities/product.entity';
-import { ProductRepositoryPort } from '../../products/domain/repository/product.repository';
+import { ProductRepository } from '../../products/domain/repository/product.repository';
 import { PricingConfig } from '../../shared/pricing/price-breakdown';
 import { QuoteUseCase } from './quote.usecase';
 
@@ -22,7 +22,7 @@ describe('QuoteUseCase', () => {
     discountRate: 0.1,
   };
 
-  const repo: jest.Mocked<ProductRepositoryPort> = {
+  const repo: jest.Mocked<ProductRepository> = {
     findAll: jest.fn(),
     findById: jest.fn(),
     decreaseStock: jest.fn(),

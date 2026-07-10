@@ -1,11 +1,11 @@
 import { ConfigService } from '@nestjs/config';
 import { UnprocessableEntityException } from '@nestjs/common';
 import { Product, ProductCategory } from '../../products/domain/entities/product.entity';
-import { ProductRepositoryPort } from '../../products/domain/repository/product.repository';
+import { ProductRepository } from '../../products/domain/repository/product.repository';
 import { PricingConfig } from '../../shared/pricing/price-breakdown';
-import { PaymentGatewayPort } from '../domain/repository/payment-gateway.repository';
+import { PaymentGateway } from '../domain/repository/payment-gateway.repository';
 import { Transaction, TransactionStatus } from '../domain/entities/transaction.entity';
-import { TransactionRepositoryPort } from '../domain/repository/transaction.repository';
+import { TransactionRepository } from '../domain/repository/transaction.repository';
 import {
   ProcessPaymentCommand,
   ProcessPaymentUseCase,
@@ -51,9 +51,9 @@ describe('ProcessPaymentUseCase', () => {
     },
   };
 
-  let products: jest.Mocked<ProductRepositoryPort>;
-  let transactions: jest.Mocked<TransactionRepositoryPort>;
-  let gateway: jest.Mocked<PaymentGatewayPort>;
+  let products: jest.Mocked<ProductRepository>;
+  let transactions: jest.Mocked<TransactionRepository>;
+  let gateway: jest.Mocked<PaymentGateway>;
   let useCase: ProcessPaymentUseCase;
 
   const config = { get: () => 'COP' } as unknown as ConfigService;

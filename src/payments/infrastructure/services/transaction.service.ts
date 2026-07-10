@@ -4,29 +4,29 @@ import { Repository } from 'typeorm';
 import { Transaction, TransactionStatus } from '../../domain/entities/transaction.entity';
 import {
   NewTransaction,
-  TransactionRepositoryPort,
+  TransactionRepository,
 } from '../../domain/repository/transaction.repository';
-import { CustomerOrmEntity } from '../models/customer.model';
-import { DeliveryOrmEntity } from '../models/delivery.model';
-import { TransactionItemOrmEntity } from '../models/transaction-item.model';
+import { CustomerModel } from '../models/customer.model';
+import { DeliveryModel } from '../models/delivery.model';
+import { TransactionItemModel } from '../models/transaction-item.model';
 import { TransactionMapper } from '../mappers/transaction.mapper';
-import { TransactionOrmEntity } from '../models/transaction.model';
+import { TransactionModel } from '../models/transaction.model';
 
 @Injectable()
-export class TypeOrmTransactionRepository
-  implements TransactionRepositoryPort
+export class TransactionService
+  implements TransactionRepository
 {
   constructor(
-    @InjectRepository(TransactionOrmEntity)
-    private readonly transactions: Repository<TransactionOrmEntity>,
-    @InjectRepository(CustomerOrmEntity)
-    private readonly customers: Repository<CustomerOrmEntity>,
+    @InjectRepository(TransactionModel)
+    private readonly transactions: Repository<TransactionModel>,
+    @InjectRepository(CustomerModel)
+    private readonly customers: Repository<CustomerModel>,
   ) {}
 
   async create(data: NewTransaction): Promise<Transaction> {
     const customer = await this.resolveCustomer(data);
 
-    const delivery = new DeliveryOrmEntity();
+    const delivery = new DeliveryModel();
     Object.assign(delivery, data.delivery);
 
     const entity = this.transactions.create({
@@ -44,7 +44,7 @@ export class TypeOrmTransactionRepository
       customer,
       delivery,
       items: data.items.map((item) => {
-        const orm = new TransactionItemOrmEntity();
+        const orm = new TransactionItemModel();
         orm.productId = item.productId;
         orm.name = item.name;
         orm.unitPriceCop = item.unitPriceCop;
@@ -86,7 +86,7 @@ export class TypeOrmTransactionRepository
 
   private async resolveCustomer(
     data: NewTransaction,
-  ): Promise<CustomerOrmEntity> {
+  ): Promise<CustomerModel> {
     const existing = await this.customers.findOne({
       where: { email: data.customer.email },
     });

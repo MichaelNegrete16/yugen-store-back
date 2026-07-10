@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity({ name: 'customers' })
 @Unique(['email'])
-export class CustomerOrmEntity {
+export class CustomerModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

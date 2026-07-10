@@ -1,6 +1,6 @@
 import { NotFoundException } from '@nestjs/common';
 import { Transaction, TransactionStatus } from '../domain/entities/transaction.entity';
-import { TransactionRepositoryPort } from '../domain/repository/transaction.repository';
+import { TransactionRepository } from '../domain/repository/transaction.repository';
 import { GetTransactionUseCase } from './get-transaction.usecase';
 
 describe('GetTransactionUseCase', () => {
@@ -10,7 +10,7 @@ describe('GetTransactionUseCase', () => {
     status: TransactionStatus.Approved,
   } as Transaction;
 
-  const repo: jest.Mocked<TransactionRepositoryPort> = {
+  const repo: jest.Mocked<TransactionRepository> = {
     create: jest.fn(),
     findByReference: jest.fn(),
     findByCustomerEmail: jest.fn(),

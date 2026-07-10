@@ -1,9 +1,9 @@
 import { Product } from '../../domain/entities/product.entity';
-import { ProductOrmEntity } from '../models/product.model';
+import { ProductModel } from '../models/product.model';
 
 /** Traduce entre la entidad de persistencia y el modelo de dominio. */
 export class ProductMapper {
-  static toDomain(entity: ProductOrmEntity): Product {
+  static toDomain(entity: ProductModel): Product {
     return {
       id: entity.id,
       name: entity.name,
@@ -18,8 +18,8 @@ export class ProductMapper {
     };
   }
 
-  static toOrm(product: Product): ProductOrmEntity {
-    const entity = new ProductOrmEntity();
+  static toOrm(product: Product): ProductModel {
+    const entity = new ProductModel();
     entity.id = product.id;
     entity.name = product.name;
     entity.priceCop = product.priceCop;

@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PRODUCT_REPOSITORY } from '../../products/domain/repository/product.repository';
-import type { ProductRepositoryPort } from '../../products/domain/repository/product.repository';
+import type { ProductRepository } from '../../products/domain/repository/product.repository';
 import { PRICING_CONFIG } from '../../shared/pricing/pricing.module';
 import {
   PricedLine,
@@ -18,7 +18,7 @@ import { fromGatewayStatus } from '../domain/gateway-status';
 import { PAYMENT_GATEWAY } from '../domain/repository/payment-gateway.repository';
 import type {
   CardDetails,
-  PaymentGatewayPort,
+  PaymentGateway,
 } from '../domain/repository/payment-gateway.repository';
 import { generateReference } from '../domain/reference';
 import {
@@ -29,7 +29,7 @@ import {
   TransactionStatus,
 } from '../domain/entities/transaction.entity';
 import { TRANSACTION_REPOSITORY } from '../domain/repository/transaction.repository';
-import type { TransactionRepositoryPort } from '../domain/repository/transaction.repository';
+import type { TransactionRepository } from '../domain/repository/transaction.repository';
 
 export interface ProcessPaymentCommand {
   customer: Customer;
@@ -46,11 +46,11 @@ export class ProcessPaymentUseCase {
 
   constructor(
     @Inject(PRODUCT_REPOSITORY)
-    private readonly products: ProductRepositoryPort,
+    private readonly products: ProductRepository,
     @Inject(TRANSACTION_REPOSITORY)
-    private readonly transactions: TransactionRepositoryPort,
+    private readonly transactions: TransactionRepository,
     @Inject(PAYMENT_GATEWAY)
-    private readonly gateway: PaymentGatewayPort,
+    private readonly gateway: PaymentGateway,
     @Inject(PRICING_CONFIG)
     private readonly pricing: PricingConfig,
     private readonly config: ConfigService,

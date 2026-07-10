@@ -1,8 +1,8 @@
 import { Transaction } from '../../domain/entities/transaction.entity';
-import { TransactionOrmEntity } from '../models/transaction.model';
+import { TransactionModel } from '../models/transaction.model';
 
 export class TransactionMapper {
-  static toDomain(entity: TransactionOrmEntity): Transaction {
+  static toDomain(entity: TransactionModel): Transaction {
     return {
       id: entity.id,
       reference: entity.reference,

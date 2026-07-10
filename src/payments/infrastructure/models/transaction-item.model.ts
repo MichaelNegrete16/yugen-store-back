@@ -4,10 +4,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { TransactionOrmEntity } from './transaction.model';
+import { TransactionModel } from './transaction.model';
 
 @Entity({ name: 'transaction_items' })
-export class TransactionItemOrmEntity {
+export class TransactionItemModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -23,8 +23,8 @@ export class TransactionItemOrmEntity {
   @Column({ type: 'int' })
   qty: number;
 
-  @ManyToOne(() => TransactionOrmEntity, (transaction) => transaction.items, {
+  @ManyToOne(() => TransactionModel, (transaction) => transaction.items, {
     onDelete: 'CASCADE',
   })
-  transaction: TransactionOrmEntity;
+  transaction: TransactionModel;
 }

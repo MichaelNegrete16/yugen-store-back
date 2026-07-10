@@ -4,7 +4,7 @@ import { Product } from '../entities/product.entity';
  * Puerto de salida para acceder al catalogo. La capa de aplicacion depende de
  * esta abstraccion; el adaptador concreto (TypeORM) vive en infraestructura.
  */
-export interface ProductRepositoryPort {
+export interface ProductRepository {
   findAll(): Promise<Product[]>;
   findById(id: string): Promise<Product | null>;
   /** Descuenta `qty` unidades del stock de un producto. */

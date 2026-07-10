@@ -1,13 +1,13 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Transaction } from '../domain/entities/transaction.entity';
 import { TRANSACTION_REPOSITORY } from '../domain/repository/transaction.repository';
-import type { TransactionRepositoryPort } from '../domain/repository/transaction.repository';
+import type { TransactionRepository } from '../domain/repository/transaction.repository';
 
 @Injectable()
 export class GetTransactionUseCase {
   constructor(
     @Inject(TRANSACTION_REPOSITORY)
-    private readonly transactions: TransactionRepositoryPort,
+    private readonly transactions: TransactionRepository,
   ) {}
 
   async execute(reference: string): Promise<Transaction> {

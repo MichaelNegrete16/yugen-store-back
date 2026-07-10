@@ -2,10 +2,10 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductCategory } from '../../domain/entities/product.entity';
-import { ProductOrmEntity } from '../models/product.model';
+import { ProductModel } from '../models/product.model';
 
 /** Catalogo inicial (mismos datos del mock de la app). */
-const SEED_PRODUCTS: ProductOrmEntity[] = [
+const SEED_PRODUCTS: ProductModel[] = [
   {
     id: 'tea-set',
     name: 'Juego de Té de Basalto',
@@ -56,8 +56,8 @@ export class ProductSeeder implements OnModuleInit {
   private readonly logger = new Logger(ProductSeeder.name);
 
   constructor(
-    @InjectRepository(ProductOrmEntity)
-    private readonly repo: Repository<ProductOrmEntity>,
+    @InjectRepository(ProductModel)
+    private readonly repo: Repository<ProductModel>,
   ) {}
 
   async onModuleInit(): Promise<void> {

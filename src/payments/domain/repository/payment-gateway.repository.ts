@@ -34,7 +34,7 @@ export interface GatewayCharge {
   status: GatewayStatus;
 }
 
-export interface PaymentGatewayPort {
+export interface PaymentGateway {
   getAcceptanceToken(): Promise<string>;
   tokenizeCard(card: CardDetails): Promise<CardToken>;
   createCharge(input: CreateChargeInput): Promise<GatewayCharge>;

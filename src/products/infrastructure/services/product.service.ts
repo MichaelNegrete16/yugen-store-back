@@ -2,16 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from '../../domain/entities/product.entity';
-import { ProductRepositoryPort } from '../../domain/repository/product.repository';
+import { ProductRepository } from '../../domain/repository/product.repository';
 import { ProductMapper } from '../mappers/product.mapper';
-import { ProductOrmEntity } from '../models/product.model';
+import { ProductModel } from '../models/product.model';
 
 /** Adaptador TypeORM que implementa el puerto del catalogo. */
 @Injectable()
-export class TypeOrmProductRepository implements ProductRepositoryPort {
+export class ProductService implements ProductRepository {
   constructor(
-    @InjectRepository(ProductOrmEntity)
-    private readonly repo: Repository<ProductOrmEntity>,
+    @InjectRepository(ProductModel)
+    private readonly repo: Repository<ProductModel>,
   ) {}
 
   async findAll(): Promise<Product[]> {

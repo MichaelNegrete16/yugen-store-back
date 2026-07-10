@@ -11,10 +11,11 @@ describe('PaymentGatewayService (stub)', () => {
     cvc: '123',
   };
 
-  it('devuelve un token de aceptacion', async () => {
-    await expect(service.getAcceptanceToken()).resolves.toBe(
-      'stub_acceptance_token',
-    );
+  it('devuelve los tokens de aceptacion', async () => {
+    await expect(service.getAcceptanceTokens()).resolves.toEqual({
+      acceptanceToken: 'stub_acceptance_token',
+      acceptPersonalAuth: 'stub_personal_auth',
+    });
   });
 
   it.each([

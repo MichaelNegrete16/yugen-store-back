@@ -78,7 +78,10 @@ describe('ProcessPaymentUseCase', () => {
       updateStatus: jest.fn(),
     };
     gateway = {
-      getAcceptanceToken: jest.fn().mockResolvedValue('acc_token'),
+      getAcceptanceTokens: jest.fn().mockResolvedValue({
+        acceptanceToken: 'acc_token',
+        acceptPersonalAuth: 'personal_auth',
+      }),
       tokenizeCard: jest
         .fn()
         .mockResolvedValue({ token: 'tok_1', brand: 'VISA', last4: '4242' }),

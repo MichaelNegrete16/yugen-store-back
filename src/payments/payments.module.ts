@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsModule } from '../products/products.module';
 import { PricingModule } from '../shared/pricing/pricing.module';
@@ -7,7 +8,8 @@ import { ListOrdersUseCase } from './application/list-orders.usecase';
 import { ProcessPaymentUseCase } from './application/process-payment.usecase';
 import { PAYMENT_GATEWAY } from './domain/repository/payment-gateway.repository';
 import { TRANSACTION_REPOSITORY } from './domain/repository/transaction.repository';
-import { PaymentGatewayService } from './infrastructure/services/payment-gateway.service';
+import { HttpPaymentGatewayService } from './infrastructure/services/http-payment-gateway.service';
+import { StubPaymentGatewayService } from './infrastructure/services/stub-payment-gateway.service';
 import { CustomerModel } from './infrastructure/models/customer.model';
 import { DeliveryModel } from './infrastructure/models/delivery.model';
 import { TransactionItemModel } from './infrastructure/models/transaction-item.model';
@@ -33,7 +35,14 @@ import { TransactionsController } from './infrastructure/controllers/transaction
     GetTransactionUseCase,
     ListOrdersUseCase,
     { provide: TRANSACTION_REPOSITORY, useClass: TransactionService },
-    { provide: PAYMENT_GATEWAY, useClass: PaymentGatewayService },
+    {
+      provide: PAYMENT_GATEWAY,
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) =>
+        config.get('GATEWAY_MODE') === 'http'
+          ? new HttpPaymentGatewayService(config)
+          : new StubPaymentGatewayService(),
+    },
   ],
   exports: [TRANSACTION_REPOSITORY],
 })

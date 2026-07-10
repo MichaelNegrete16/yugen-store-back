@@ -38,11 +38,15 @@ services:
     networks:
       - yugen_net
 
-  # Tunnel propio: expone la API por el dominio sin abrir puertos en el host.
+  # Tunnel propio (locally-managed): expone la API por el dominio sin abrir
+  # puertos en el host ni usar Zero Trust. Usa el archivo de credenciales y el
+  # config montados desde ./cloudflared.
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: yugen_cloudflared
-    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    command: tunnel --no-autoupdate --config /etc/cloudflared/config.yml run
+    volumes:
+      - ./cloudflared:/etc/cloudflared:ro
     restart: unless-stopped
     depends_on:
       - yugen_api

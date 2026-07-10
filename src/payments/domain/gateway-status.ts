@@ -1,5 +1,5 @@
-import { GatewayStatus } from './payment-gateway.port';
-import { TransactionStatus } from './transaction';
+import { GatewayStatus } from './repository/payment-gateway.repository';
+import { TransactionStatus } from './entities/transaction.entity';
 
 export function fromGatewayStatus(status: GatewayStatus): TransactionStatus {
   switch (status) {

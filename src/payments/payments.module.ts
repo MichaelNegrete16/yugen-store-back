@@ -2,17 +2,17 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsModule } from '../products/products.module';
 import { PricingModule } from '../shared/pricing/pricing.module';
-import { GetTransactionUseCase } from './application/get-transaction.use-case';
-import { ProcessPaymentUseCase } from './application/process-payment.use-case';
-import { PAYMENT_GATEWAY } from './domain/payment-gateway.port';
-import { TRANSACTION_REPOSITORY } from './domain/transaction.repository.port';
-import { StubPaymentGatewayAdapter } from './infrastructure/gateway/stub-payment-gateway.adapter';
-import { CustomerOrmEntity } from './infrastructure/persistence/customer.orm-entity';
-import { DeliveryOrmEntity } from './infrastructure/persistence/delivery.orm-entity';
-import { TransactionItemOrmEntity } from './infrastructure/persistence/transaction-item.orm-entity';
-import { TransactionOrmEntity } from './infrastructure/persistence/transaction.orm-entity';
-import { TypeOrmTransactionRepository } from './infrastructure/persistence/typeorm-transaction.repository';
-import { TransactionsController } from './infrastructure/transactions.controller';
+import { GetTransactionUseCase } from './application/get-transaction.usecase';
+import { ProcessPaymentUseCase } from './application/process-payment.usecase';
+import { PAYMENT_GATEWAY } from './domain/repository/payment-gateway.repository';
+import { TRANSACTION_REPOSITORY } from './domain/repository/transaction.repository';
+import { StubPaymentGatewayAdapter } from './infrastructure/services/stub-payment-gateway.service';
+import { CustomerOrmEntity } from './infrastructure/models/customer.model';
+import { DeliveryOrmEntity } from './infrastructure/models/delivery.model';
+import { TransactionItemOrmEntity } from './infrastructure/models/transaction-item.model';
+import { TransactionOrmEntity } from './infrastructure/models/transaction.model';
+import { TypeOrmTransactionRepository } from './infrastructure/services/typeorm-transaction.service';
+import { TransactionsController } from './infrastructure/controllers/transactions.controller';
 
 @Module({
   imports: [

@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GetProductUseCase } from './application/get-product.use-case';
-import { ListProductsUseCase } from './application/list-products.use-case';
-import { PRODUCT_REPOSITORY } from './domain/product.repository.port';
-import { ProductOrmEntity } from './infrastructure/product.orm-entity';
-import { ProductSeeder } from './infrastructure/product.seeder';
-import { ProductsController } from './infrastructure/products.controller';
-import { TypeOrmProductRepository } from './infrastructure/typeorm-product.repository';
+import { GetProductUseCase } from './application/get-product.usecase';
+import { ListProductsUseCase } from './application/list-products.usecase';
+import { PRODUCT_REPOSITORY } from './domain/repository/product.repository';
+import { ProductOrmEntity } from './infrastructure/models/product.model';
+import { ProductSeeder } from './infrastructure/seeders/product.seeder';
+import { ProductsController } from './infrastructure/controllers/products.controller';
+import { TypeOrmProductRepository } from './infrastructure/services/typeorm-product.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ProductOrmEntity])],

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
+  AcceptanceTokens,
   CardDetails,
   CardToken,
   CreateChargeInput,
@@ -12,8 +13,11 @@ import {
 // El adaptador real la reemplaza mas adelante. Tarjetas con last4 "0002" salen DECLINED.
 @Injectable()
 export class PaymentGatewayService implements PaymentGateway {
-  getAcceptanceToken(): Promise<string> {
-    return Promise.resolve('stub_acceptance_token');
+  getAcceptanceTokens(): Promise<AcceptanceTokens> {
+    return Promise.resolve({
+      acceptanceToken: 'stub_acceptance_token',
+      acceptPersonalAuth: 'stub_personal_auth',
+    });
   }
 
   tokenizeCard(card: CardDetails): Promise<CardToken> {

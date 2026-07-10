@@ -139,8 +139,7 @@ export class ProcessPaymentUseCase {
   }> {
     try {
       const token = await this.gateway.tokenizeCard(command.card);
-      const acceptanceToken =
-        command.acceptanceToken ?? (await this.gateway.getAcceptanceToken());
+      const tokens = await this.gateway.getAcceptanceTokens();
 
       const charge = await this.gateway.createCharge({
         reference,
@@ -149,7 +148,8 @@ export class ProcessPaymentUseCase {
         customerEmail: command.customer.email,
         cardToken: token.token,
         installments: command.card.installments,
-        acceptanceToken,
+        acceptanceToken: command.acceptanceToken ?? tokens.acceptanceToken,
+        acceptPersonalAuth: tokens.acceptPersonalAuth,
       });
 
       return {

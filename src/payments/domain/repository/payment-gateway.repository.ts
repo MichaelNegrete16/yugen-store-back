@@ -19,6 +19,11 @@ export type GatewayStatus =
   | 'VOIDED'
   | 'ERROR';
 
+export interface AcceptanceTokens {
+  acceptanceToken: string;
+  acceptPersonalAuth: string;
+}
+
 export interface CreateChargeInput {
   reference: string;
   amountInCents: number;
@@ -26,7 +31,8 @@ export interface CreateChargeInput {
   customerEmail: string;
   cardToken: string;
   installments: number;
-  acceptanceToken?: string;
+  acceptanceToken: string;
+  acceptPersonalAuth: string;
 }
 
 export interface GatewayCharge {
@@ -35,7 +41,7 @@ export interface GatewayCharge {
 }
 
 export interface PaymentGateway {
-  getAcceptanceToken(): Promise<string>;
+  getAcceptanceTokens(): Promise<AcceptanceTokens>;
   tokenizeCard(card: CardDetails): Promise<CardToken>;
   createCharge(input: CreateChargeInput): Promise<GatewayCharge>;
   getCharge(gatewayTransactionId: string): Promise<GatewayCharge>;

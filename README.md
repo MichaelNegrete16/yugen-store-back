@@ -111,6 +111,11 @@ Cobertura actual (`pnpm run test:cov`) — **80 tests, 26 suites**:
 | `GET`  | `/transactions/:reference` | Estado de la transacción (polling)          |
 | `GET`  | `/orders?email=`           | Historial de compras del cliente            |
 
+### Documentación interactiva (Swagger)
+
+Con la API corriendo, la documentación OpenAPI está en **`/api/v1/docs`**
+(y el JSON en `/api/v1/docs-json`). Permite explorar y probar todos los endpoints.
+
 Los errores usan un envelope consistente:
 
 ```json

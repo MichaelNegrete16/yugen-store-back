@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
-import { UnprocessableEntityException } from '@nestjs/common';
+import { BadGatewayException, UnprocessableEntityException } from '@nestjs/common';
+import { GatewayResponseError } from '../domain/gateway.error';
 import { Product, ProductCategory } from '../../products/domain/entities/product.entity';
 import { ProductRepository } from '../../products/domain/repository/product.repository';
 import { PricingConfig } from '../../shared/pricing/price-breakdown';
@@ -123,6 +124,39 @@ describe('ProcessPaymentUseCase', () => {
 
     expect(result.status).toBe(TransactionStatus.Declined);
     expect(products.decreaseStock).not.toHaveBeenCalled();
+  });
+
+  it('registra la transaccion como rechazada si la pasarela responde 4xx (tarjeta invalida)', async () => {
+    gateway.tokenizeCard.mockRejectedValue(
+      new GatewayResponseError(422, 'Pasarela respondio 422: tarjeta invalida'),
+    );
+
+    const result = await useCase.execute(command);
+
+    expect(result.status).toBe(TransactionStatus.Declined);
+    expect(result.cardLast4).toBe('4242');
+    expect(result.gatewayTransactionId).toBeNull();
+    expect(transactions.create).toHaveBeenCalled();
+    expect(products.decreaseStock).not.toHaveBeenCalled();
+  });
+
+  it('lanza 502 cuando la pasarela cae (5xx o error de red)', async () => {
+    gateway.tokenizeCard.mockRejectedValue(
+      new GatewayResponseError(503, 'Pasarela respondio 503: service unavailable'),
+    );
+
+    await expect(useCase.execute(command)).rejects.toBeInstanceOf(
+      BadGatewayException,
+    );
+    expect(transactions.create).not.toHaveBeenCalled();
+  });
+
+  it('lanza 502 ante un error de red sin respuesta de la pasarela', async () => {
+    gateway.tokenizeCard.mockRejectedValue(new Error('network down'));
+
+    await expect(useCase.execute(command)).rejects.toBeInstanceOf(
+      BadGatewayException,
+    );
   });
 
   it('rechaza con 422 cuando no hay stock suficiente', async () => {

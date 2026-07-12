@@ -97,7 +97,14 @@ pnpm test           # unit tests
 pnpm run test:cov   # con reporte de cobertura
 ```
 
-Cobertura actual (`pnpm run test:cov`) — **80 tests, 26 suites**:
+Cobertura actual (`pnpm run test:cov`) — **83 tests, 26 suites** (todos en verde):
+
+| Métrica    | Cobertura  |
+| ---------- | ---------- |
+| Statements | **87.41%** |
+| Lines      | **87.67%** |
+| Branches   | 82.92%     |
+| Functions  | 85.41%     |
 
 ## Endpoints (`/api/v1`)
 
@@ -147,13 +154,17 @@ descuento, nunca confía en un total enviado por el cliente. Moneda en **COP ent
 
 ## Tarjetas de prueba (sandbox)
 
-| Tarjeta               | Resultado |
-| --------------------- | --------- |
-| `4242 4242 4242 4242` | Aprobada  |
-| `4111 1111 1111 1111` | Declinada |
-| Cualquier otra        | Error     |
+| Tarjeta                                       | Resultado |
+| --------------------------------------------- | --------- |
+| `4242 4242 4242 4242`                         | Aprobada  |
+| Número inválido / rechazado por la pasarela   | Declinada |
 
-Cualquier fecha de expiración futura y CVC de 3 dígitos.
+Cualquier fecha de expiración futura y CVC de 3 dígitos. Si la pasarela rechaza la
+tarjeta (HTTP 4xx), la transacción se registra como **declinada** (no como error); solo
+una caída real de la pasarela devuelve `502`.
+
+> En modo `stub` (default en local/Docker) el resultado es determinista: las tarjetas cuyo
+> `last4` es `0002` salen **declinadas** y el resto **aprobadas** (sin llamadas de red).
 
 ## Seguridad
 

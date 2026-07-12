@@ -22,6 +22,13 @@ export class CreateTransactionResponseDoc {
   @ApiProperty({ example: '9c1e...uuid' })
   id: string;
 
+  @ApiProperty({
+    example: '113809-1731020400-00001',
+    nullable: true,
+    description: 'Referencia de la transacción en la pasarela de pago',
+  })
+  gatewayTransactionId: string | null;
+
   @ApiProperty({ enum: ['approved', 'pending', 'declined'], example: 'pending' })
   status: string;
 

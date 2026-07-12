@@ -8,6 +8,8 @@ import {
 export interface CreateTransactionResponse {
   reference: string;
   id: string;
+  /** Referencia de la transacción en la pasarela de pago (null si no aplica). */
+  gatewayTransactionId: string | null;
   status: AppTransactionStatus;
   amountCop: number;
   breakdown: PriceBreakdown;
@@ -32,6 +34,7 @@ export class TransactionPresenter {
     return {
       reference: tx.reference,
       id: tx.id,
+      gatewayTransactionId: tx.gatewayTransactionId ?? null,
       status: toAppStatus(tx.status),
       amountCop: tx.amountCop,
       breakdown: tx.breakdown,

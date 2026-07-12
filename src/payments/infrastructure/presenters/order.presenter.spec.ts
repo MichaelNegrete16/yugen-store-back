@@ -10,6 +10,7 @@ const tx = {
   amountCop: 712600,
   cardBrand: 'VISA',
   cardLast4: '4242',
+  gatewayTransactionId: 'gw-123',
   items: [
     { productId: 'tea-set', name: 'Té', unitPriceCop: 320000, qty: 2 },
     { productId: 'tea-set', name: 'Té', unitPriceCop: 320000, qty: 1 },
@@ -24,6 +25,7 @@ describe('OrderPresenter', () => {
 
     expect(res).toEqual({
       id: 'YUGEN-1',
+      gatewayTransactionId: 'gw-123',
       createdAt: '2026-07-10T00:00:00.000Z',
       amountCop: 712600,
       itemCount: 4,

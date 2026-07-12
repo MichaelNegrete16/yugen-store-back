@@ -6,6 +6,7 @@ import {
 
 export interface OrderResponse {
   id: string;
+  gatewayTransactionId: string | null;
   createdAt: string;
   amountCop: number;
   itemCount: number;
@@ -19,6 +20,7 @@ export class OrderPresenter {
   static toResponse(tx: Transaction): OrderResponse {
     return {
       id: tx.reference,
+      gatewayTransactionId: tx.gatewayTransactionId ?? null,
       createdAt: tx.createdAt.toISOString(),
       amountCop: tx.amountCop,
       itemCount: tx.items.reduce((sum, item) => sum + item.qty, 0),

@@ -43,6 +43,7 @@ describe('TransactionPresenter', () => {
     expect(res).toEqual({
       reference: 'YUGEN-1',
       id: 'uuid-1',
+      gatewayTransactionId: 'gw_1',
       status: 'approved',
       amountCop: 712600,
       breakdown: tx.breakdown,

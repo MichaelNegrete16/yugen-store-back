@@ -15,6 +15,7 @@ import {
 } from '../../shared/pricing/price-breakdown';
 import type { PricingConfig } from '../../shared/pricing/price-breakdown';
 import { fromGatewayStatus } from '../domain/gateway-status';
+import { GatewayResponseError } from '../domain/gateway.error';
 import { PAYMENT_GATEWAY } from '../domain/repository/payment-gateway.repository';
 import type {
   CardDetails,
@@ -135,7 +136,7 @@ export class ProcessPaymentUseCase {
     brand: string;
     last4: string;
     status: TransactionStatus;
-    gatewayTransactionId: string;
+    gatewayTransactionId: string | null;
   }> {
     try {
       const token = await this.gateway.tokenizeCard(command.card);
@@ -159,6 +160,19 @@ export class ProcessPaymentUseCase {
         gatewayTransactionId: charge.gatewayTransactionId,
       };
     } catch (error) {
+      // Si la pasarela rechazó el medio de pago (4xx), no es una caída:
+      // registramos la transacción como rechazada y seguimos el flujo normal.
+      if (error instanceof GatewayResponseError && error.isRejection) {
+        this.logger.warn(
+          `Pago rechazado por la pasarela en ${reference}: ${error.message}`,
+        );
+        return {
+          brand: '',
+          last4: command.card.number.slice(-4),
+          status: TransactionStatus.Declined,
+          gatewayTransactionId: null,
+        };
+      }
       this.logger.error(`GATEWAY_ERROR en ${reference}`, error as Error);
       throw new BadGatewayException('GATEWAY_ERROR');
     }

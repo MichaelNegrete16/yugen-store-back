@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createHash } from 'crypto';
+import { GatewayResponseError } from '../../domain/gateway.error';
 import {
   AcceptanceTokens,
   CardDetails,
@@ -112,7 +113,8 @@ export class HttpPaymentGatewayService implements PaymentGateway {
 
     const json = (await res.json()) as { data?: unknown; error?: unknown };
     if (!res.ok) {
-      throw new Error(
+      throw new GatewayResponseError(
+        res.status,
         `Pasarela respondio ${res.status}: ${JSON.stringify(json.error ?? json)}`,
       );
     }

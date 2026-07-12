@@ -1,8 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class OrderResponseDoc {
-  @ApiProperty({ example: 'YUGEN-1731020400000-a1b2', description: 'Referencia' })
+  @ApiProperty({ example: 'YUGEN-1731020400000-a1b2', description: 'Referencia de la tienda' })
   id: string;
+
+  @ApiProperty({
+    example: '113809-1731020400-00001',
+    nullable: true,
+    description: 'Referencia de la transacción en la pasarela de pago',
+  })
+  gatewayTransactionId: string | null;
 
   @ApiProperty({ example: '2026-07-10T05:48:00.000Z' })
   createdAt: string;
